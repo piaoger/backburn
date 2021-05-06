@@ -21,38 +21,13 @@ The following platforms are supported, with a different set of features availabl
 * azurestack
   - Boot check-in
   - SSH Keys
-* cloudstack-configdrive
-  - Attributes
-  - SSH Keys
-* cloudstack-metadata
-  - Attributes
-  - SSH Keys
-* digitalocean
-  - Attributes
-  - SSH Keys
-* exoscale
-  - Attributes
-  - SSH Keys
 * gcp
   - Attributes
   - SSH Keys
-* ibmcloud
-  - Attributes
-  - SSH Keys
-* ibmcloud-classic
-  - Attributes
 * openstack
   - Attributes
   - SSH Keys
 * openstack-metadata
   - Attributes
   - SSH Keys
-* packet
-  - Attributes
-  - First-boot check-in
-  - SSH Keys
-* vmware
-  - Custom network command-line arguments
-* vultr
-  - Attributes
-  - SSH Keys
+
