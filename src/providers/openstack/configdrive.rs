@@ -8,7 +8,7 @@ use std::io::{BufReader, Read};
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
-// use openssh_keys::PublicKey;
+
 use slog_scope::{error, warn};
 use tempfile::TempDir;
 

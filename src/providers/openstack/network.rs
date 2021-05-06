@@ -3,7 +3,6 @@
 use std::collections::HashMap;
 
 use anyhow::{anyhow, bail, Result};
-// use openssh_keys::PublicKey;
 
 use crate::providers::MetadataProvider;
 use crate::retry;
