@@ -16,7 +16,6 @@
 
 use crate::providers;
 use anyhow::Result;
-use configdrive::OpenstackConfigDrive;
 use network::OpenstackProviderNetwork;
 use slog_scope::warn;
 
@@ -26,14 +25,9 @@ pub mod network;
 #[cfg(test)]
 mod mock_tests;
 
-/// Read metadata from the config-drive first then fallback to fetch from metadata server.
+/// Read metadata from metadata server.
 ///
 /// Reference: https://github.com/coreos/fedora-coreos-tracker/issues/422
 pub fn try_config_drive_else_network() -> Result<Box<dyn providers::MetadataProvider>> {
-    if let Ok(config_drive) = OpenstackConfigDrive::try_new() {
-        Ok(Box::new(config_drive))
-    } else {
-        warn!("failed to locate config-drive, using the metadata service API instead");
-        Ok(Box::new(OpenstackProviderNetwork::try_new()?))
-    }
+	Ok(Box::new(OpenstackProviderNetwork::try_new()?))
 }

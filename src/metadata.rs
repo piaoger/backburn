@@ -35,8 +35,8 @@ pub fn fetch_metadata(provider: &str) -> Result<Box<dyn providers::MetadataProvi
     match provider {
         "aliyun" => box_result!(AliyunProvider::try_new()?),
         "aws" => box_result!(AwsProvider::try_new()?),
-        "openstack" => openstack::try_config_drive_else_network(),
-        "openstack-metadata" => box_result!(OpenstackProviderNetwork::try_new()?),
+        "huaweicloud" => box_result!(OpenstackProviderNetwork::try_new()?),
+        "openstack" => box_result!(OpenstackProviderNetwork::try_new()?),
         _ => bail!("unknown provider '{}'", provider),
     }
 }
