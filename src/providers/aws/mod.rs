@@ -107,38 +107,6 @@ impl AwsProvider {
         Ok(token)
     }
 
-    fn fetch_ssh_keys(&self) -> Result<Vec<String>> {
-        let keydata: Option<String> = self
-            .client
-            .get(
-                retry::Raw,
-                AwsProvider::endpoint_for("meta-data/public-keys", false),
-            )
-            .send()?;
-
-        let mut keys = Vec::new();
-        if let Some(keys_list) = keydata {
-            for l in keys_list.lines() {
-                let tokens: Vec<&str> = l.split('=').collect();
-                if tokens.len() != 2 {
-                    bail!("error parsing keyID");
-                }
-                let key: String = self
-                    .client
-                    .get(
-                        retry::Raw,
-                        AwsProvider::endpoint_for(
-                            &format!("meta-data/public-keys/{}/openssh-key", tokens[0]),
-                            false,
-                        ),
-                    )
-                    .send()?
-                    .ok_or_else(|| anyhow!("missing ssh key"))?;
-                keys.push(key)
-            }
-        }
-        Ok(keys)
-    }
 }
 
 impl MetadataProvider for AwsProvider {
@@ -192,16 +160,5 @@ impl MetadataProvider for AwsProvider {
                 AwsProvider::endpoint_for("meta-data/hostname", false),
             )
             .send()
-    }
-
-    fn ssh_keys(&self) -> Result<Vec<PublicKey>> {
-        self.fetch_ssh_keys().map(|keys| {
-            keys.into_iter()
-                .map(|key| {
-                    let key = PublicKey::parse(&key)?;
-                    Ok(key)
-                })
-                .collect::<Result<Vec<_>>>()
-        })?
     }
 }

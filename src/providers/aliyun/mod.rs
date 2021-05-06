@@ -66,31 +66,7 @@ impl AliyunProvider {
         Ok(())
     }
 
-    /// Retrieve SSH public keys.
-    ///
-    /// Note: this uses a `BTreeSet` to de-duplicate redundant
-    /// entries returned by the metadata API.
-    fn fetch_ssh_keys(&self) -> Result<BTreeSet<String>> {
-        let entries: Option<String> = self
-            .client
-            .get(retry::Raw, AliyunProvider::endpoint_for("public-keys/"))
-            .send()?;
-        let keys_list = entries.unwrap_or_default();
 
-        let mut out = BTreeSet::new();
-        for entry in keys_list.lines() {
-            let key_id = entry.trim_end_matches('/');
-            let ep = format!("public-keys/{}/openssh-key", key_id);
-            let key: String = self
-                .client
-                .get(retry::Raw, AliyunProvider::endpoint_for(&ep))
-                .send()?
-                .ok_or_else(|| anyhow!("missing ssh key"))?;
-            out.insert(key);
-        }
-
-        Ok(out)
-    }
 
     /// Retrieve hostname.
     fn fetch_hostname(&self) -> Result<Option<String>> {
@@ -157,18 +133,5 @@ impl MetadataProvider for AliyunProvider {
 
     fn hostname(&self) -> Result<Option<String>> {
         self.fetch_hostname()
-    }
-
-    fn ssh_keys(&self) -> Result<Vec<PublicKey>> {
-        let entries = self.fetch_ssh_keys()?;
-        let mut out = Vec::with_capacity(entries.len());
-        for key in entries {
-            match PublicKey::parse(&key) {
-                Ok(pk) => out.push(pk),
-                Err(e) => error!("failed to parse SSH public-key entry: {}", e),
-            };
-        }
-
-        Ok(out)
     }
 }

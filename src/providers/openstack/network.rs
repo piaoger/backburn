@@ -32,37 +32,6 @@ impl OpenstackProviderNetwork {
         format!("{}/{}", URL, key)
     }
 
-    fn fetch_keys(&self) -> Result<Vec<String>> {
-        let keys_list: Option<String> = self
-            .client
-            .get(
-                retry::Raw,
-                OpenstackProviderNetwork::endpoint_for("public-keys"),
-            )
-            .send()?;
-        let mut keys = Vec::new();
-        if let Some(keys_list) = keys_list {
-            for l in keys_list.lines() {
-                let tokens: Vec<&str> = l.split('=').collect();
-                if tokens.len() != 2 {
-                    bail!("error parsing keyID");
-                }
-                let key: String = self
-                    .client
-                    .get(
-                        retry::Raw,
-                        OpenstackProviderNetwork::endpoint_for(&format!(
-                            "public-keys/{}/openssh-key",
-                            tokens[0]
-                        )),
-                    )
-                    .send()?
-                    .ok_or_else(|| anyhow!("missing ssh key"))?;
-                keys.push(key);
-            }
-        }
-        Ok(keys)
-    }
 }
 
 impl MetadataProvider for OpenstackProviderNetwork {
@@ -96,16 +65,5 @@ impl MetadataProvider for OpenstackProviderNetwork {
                 OpenstackProviderNetwork::endpoint_for("hostname"),
             )
             .send()
-    }
-
-    fn ssh_keys(&self) -> Result<Vec<PublicKey>> {
-        let mut out = Vec::new();
-
-        for key in &self.fetch_keys()? {
-            let key = PublicKey::parse(&key)?;
-            out.push(key);
-        }
-
-        Ok(out)
     }
 }
