@@ -6,7 +6,7 @@
 use anyhow::{anyhow, Result};
 #[cfg(test)]
 use mockito;
-use openssh_keys::PublicKey;
+// use openssh_keys::PublicKey;
 use slog_scope::error;
 use std::collections::{BTreeSet, HashMap};
 

@@ -8,7 +8,7 @@ use std::io::{BufReader, Read};
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
-use openssh_keys::PublicKey;
+// use openssh_keys::PublicKey;
 use slog_scope::{error, warn};
 use tempfile::TempDir;
 
@@ -109,26 +109,6 @@ impl OpenstackConfigDrive {
         let bufrd = BufReader::new(file);
         Self::parse_metadata_openstack(bufrd)
             .with_context(|| format!("failed to parse file '{:?}'", filename))
-    }
-
-    /// The public key is stored as key:value pair in openstack/latest/meta_data.json file
-    fn fetch_publickeys(&self) -> Result<Vec<PublicKey>> {
-        let filename = self.metadata_dir("openstack").join("meta_data.json");
-        let file = File::open(&filename)
-            .with_context(|| format!("failed to open file '{:?}'", filename))?;
-
-        let bufrd = BufReader::new(file);
-        let metadata: MetadataOpenstackJSON = Self::parse_metadata_openstack(bufrd)
-            .with_context(|| format!("failed to parse file '{:?}'", filename))?;
-
-        let public_keys_map = metadata.public_keys.unwrap_or_default();
-        let public_keys_vec: Vec<&std::string::String> = public_keys_map.values().collect();
-        let mut out = vec![];
-        for key in public_keys_vec {
-            let key = PublicKey::parse(key)?;
-            out.push(key);
-        }
-        Ok(out)
     }
 }
 

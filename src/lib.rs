@@ -1,6 +1,4 @@
 
 pub mod metadata;
-
-
-pub mod providers;
+mod providers;
 pub mod retry;

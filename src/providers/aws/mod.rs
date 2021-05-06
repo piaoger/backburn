@@ -20,7 +20,7 @@ use std::collections::HashMap;
 use anyhow::{anyhow, bail, Context, Result};
 #[cfg(test)]
 use mockito;
-use openssh_keys::PublicKey;
+// use openssh_keys::PublicKey;
 use reqwest::header;
 use serde_derive::Deserialize;
 use slog_scope::warn;

@@ -25,28 +25,11 @@
 
 pub mod aliyun;
 pub mod aws;
-// pub mod cloudstack;
-// pub mod digitalocean;
-// pub mod exoscale;
-//pub mod gcp;
-// pub mod ibmcloud;
-// pub mod ibmcloud_classic;
-//pub mod microsoft;
 pub mod openstack;
-// pub mod packet;
-// pub mod vmware;
-// pub mod vultr;
 
 // use crate::network;
 use anyhow::{anyhow, Context, Result};
-// use libsystemd::logging;
-// use openssh_keys::PublicKey;
-use slog_scope::warn;
 use std::collections::HashMap;
-use std::fs::{self, File};
-use std::io::prelude::*;
-use std::path::Path;
-use users::{self, User};
 
 pub trait MetadataProvider {
     fn attributes(&self) -> Result<HashMap<String, String>> {
