@@ -14,20 +14,8 @@
 
 //! openstack metadata fetcher
 
-use crate::providers;
-use anyhow::Result;
-use network::OpenstackProviderNetwork;
-use slog_scope::warn;
 
-pub mod configdrive;
 pub mod network;
 
 #[cfg(test)]
 mod mock_tests;
-
-/// Read metadata from metadata server.
-///
-/// Reference: https://github.com/coreos/fedora-coreos-tracker/issues/422
-pub fn try_config_drive_else_network() -> Result<Box<dyn providers::MetadataProvider>> {
-	Ok(Box::new(OpenstackProviderNetwork::try_new()?))
-}
