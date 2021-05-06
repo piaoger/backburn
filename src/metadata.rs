@@ -17,20 +17,8 @@ use anyhow::{bail, Result};
 use crate::providers;
 use crate::providers::aliyun::AliyunProvider;
 use crate::providers::aws::AwsProvider;
-// use crate::providers::cloudstack::configdrive::ConfigDrive;
-// use crate::providers::cloudstack::network::CloudstackNetwork;
-// use crate::providers::digitalocean::DigitalOceanProvider;
-// use crate::providers::exoscale::ExoscaleProvider;
-//use crate::providers::gcp::GcpProvider;
-// use crate::providers::ibmcloud::IBMGen2Provider;
-// use crate::providers::ibmcloud_classic::IBMClassicProvider;
-// use crate::providers::microsoft::azure::Azure;
-// use crate::providers::microsoft::azurestack::AzureStack;
 use crate::providers::openstack;
 use crate::providers::openstack::network::OpenstackProviderNetwork;
-// use crate::providers::packet::PacketProvider;
-// use crate::providers::vmware::VmwareProvider;
-// use crate::providers::vultr::VultrProvider;
 
 macro_rules! box_result {
     ($exp:expr) => {
@@ -47,22 +35,8 @@ pub fn fetch_metadata(provider: &str) -> Result<Box<dyn providers::MetadataProvi
     match provider {
         "aliyun" => box_result!(AliyunProvider::try_new()?),
         "aws" => box_result!(AwsProvider::try_new()?),
-        //"azure" => box_result!(Azure::try_new()?),
-        //"azurestack" => box_result!(AzureStack::try_new()?),
-        // "cloudstack-metadata" => box_result!(CloudstackNetwork::try_new()?),
-        // "cloudstack-configdrive" => box_result!(ConfigDrive::try_new()?),
-        // "digitalocean" => box_result!(DigitalOceanProvider::try_new()?),
-        // "exoscale" => box_result!(ExoscaleProvider::try_new()?),
-        //"gcp" => box_result!(GcpProvider::try_new()?),
-        // IBM Cloud - VPC Generation 2.
-        //"ibmcloud" => box_result!(IBMGen2Provider::try_new()?),
-        // IBM Cloud - Classic infrastructure.
-        //"ibmcloud-classic" => box_result!(IBMClassicProvider::try_new()?),
         "openstack" => openstack::try_config_drive_else_network(),
         "openstack-metadata" => box_result!(OpenstackProviderNetwork::try_new()?),
-        // "packet" => box_result!(PacketProvider::try_new()?),
-        // "vmware" => box_result!(VmwareProvider::try_new()?),
-        // "vultr" => box_result!(VultrProvider::try_new()?),
         _ => bail!("unknown provider '{}'", provider),
     }
 }

@@ -1,9 +1,9 @@
 [package]
-name = "afterburn"
-repository = "https://github.com/coreos/afterburn"
+name = "backburn"
+repository = "https://github.com/piaoger/backburn"
 license = "Apache-2.0"
 edition = "2018"
-exclude = ["/.cci.jenkinsfile", "/.github", "/.gitignore"]
+exclude = ["/.github", "/.gitignore"]
 authors = [ "Stephen Demos <stephen.demos@coreos.com>",
             "Luca Bruno <lucab@debian.org>" ]
 description = "A simple cloud provider agent"
@@ -13,17 +13,14 @@ version = "5.0.1-alpha.0"
 sign-commit = true
 disable-push = true
 disable-publish = true
-pre-release-commit-message = "cargo: Afterburn release {{version}}"
+pre-release-commit-message = "cargo: Backburn release {{version}}"
 post-release-commit-message = "cargo: development version bump"
-tag-message = "Afterburn v{{version}}"
+tag-message = "Backburn v{{version}}"
 
 [lib]
 name = "backburn"
 path = "src/lib.rs"
 
-# [[bin]]
-# name = "afterburn"
-# path = "src/main.rs"
 
 [profile.release]
 lto = true
