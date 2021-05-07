@@ -21,6 +21,9 @@ tag-message = "Backburn v{{version}}"
 name = "backburn"
 path = "src/lib.rs"
 
+[[bin]]
+name = "backburn"
+path = "src/main.rs"
 
 [profile.release]
 lto = true
@@ -45,6 +48,7 @@ slog-async = "2.5"
 slog-scope = "4.3"
 slog-term = ">= 2.6, < 3"
 tempfile = "3.2"
+structopt = "0.3"
 
 [dependencies.slog]
 version = "2.7"
