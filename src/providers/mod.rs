@@ -26,6 +26,7 @@
 pub mod aliyun;
 pub mod aws;
 pub mod openstack;
+pub mod tencentyun;
 
 use anyhow::{anyhow, Context, Result};
 use std::collections::HashMap;
